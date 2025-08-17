@@ -1,0 +1,74 @@
+docker run -it \
+  --name ros2_drl_dev \
+  --privileged \
+  -v ~/ros2-drl:/workspace \
+  -w /workspace \
+  -v /dev:/dev \
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  -e DISPLAY=unix$DISPLAY \
+  -v ~/.ssh:/root/.ssh:ro \
+  --net=host \
+  --gpus all \
+  ros:humble-ros-base \
+  bash
+
+
+apt-get update && apt-get install -y --no-install-recommends git curl wget ca-certificates
+
+apt-get update && apt-get install -y python3-pip
+pip install torch==2.3.0 stable-baselines3 gymnasium
+
+apt-get update && apt-get install -y git
+
+apt-get update && apt-get install -y git-lfs
+git lfs install
+
+
+sudo apt-get update
+sudo apt-get install lsb-release gnupg
+
+sudo curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
+sudo apt-get update
+sudo apt-get install ignition-fortress
+
+apt install ros-humble-ros-ign-interfaces
+
+sudo apt update
+sudo apt install '~nros-humble-rqt*'
+
+apt install -y libogre-1.12-dev
+
+apt install -y ros-humble-desktop
+
+sudo apt install ros-humble-ros-ign-gazebo
+
+sudo apt install ros-humble-ros-ign
+
+apt install ros-humble-ros-ign-bridge
+
+apt install  ros-humble-ros-ign-image
+
+apt install ros-humble-ign-ros2-control
+
+sudo apt update
+sudo apt install -y ros-humble-ros2controlcli
+
+sudo apt update
+sudo apt install -y \
+  ros-humble-joint-state-broadcaster \
+  ros-humble-joint-trajectory-controller \
+  ros-humble-ros2-controllers
+
+pip install transforms3d
+
+pip install shapely
+
+sudo apt update
+sudo apt install -y python3-ignition-transport
+
+
+apt update && apt install -y mesa-utils x11-apps
+glxinfo | grep -E 'OpenGL vendor|renderer|version'
+# 应显示 NVIDIA 渲染管线信息
+xeyes  # 小眼睛弹出窗口则 X11/GUI OK

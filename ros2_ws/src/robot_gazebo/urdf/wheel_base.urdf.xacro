@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="wheel_base" xmlns:xacro="http://ros.org/wiki/xacro" >
+
+    <xacro:macro name="cylinder_link_macro" params="suffix mass arg radius length if_collision if_visual">
+        <xacro:property name="sq_r" value="${radius*radius}"/>
+        <xacro:property name="sq_l" value="${length*length}"/>
+        <link name="${suffix}_link">
+            <inertial>
+                <mass value="${mass}"/>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <inertia ixx="${3*sq_r*arg/12+sq_l*arg/12}" ixy="0.0" ixz="0.0" iyy="${3*sq_r*arg/12+sq_l*arg/12}" 
+                iyz="0.0" izz="${arg*sq_r/2}"/>
+            </inertial>
+            <xacro:if value="${if_visual}">
+                <visual>
+                    <geometry>
+                        <cylinder length="${length}" radius="${radius}"/>
+                    </geometry>
+                    <material name="red">
+                        <color rgba="1.0 0.0 0.0 1.0"/>
+                    </material>
+                </visual>
+            </xacro:if>
+            <xacro:if value="${if_collision}">
+                <collision>
+                    <geometry>
+                        <cylinder length="${length}" radius="${radius}"/>
+                    </geometry>
+                    <origin xyz="0 0 0" rpy="0 0 0"/>
+                </collision>
+            </xacro:if>
+        </link>
+    </xacro:macro>
+
+    <xacro:macro name="steer_macro" params="suffix parent base_radius wheel_radius wheel_offset x y z">
+        <xacro:cylinder_link_macro suffix="top_${suffix}_base" mass="0.0001" arg="1.0" radius="${base_radius}" length="0.001" if_collision="false" if_visual="false"/>
+        <joint name="top_${suffix}_base_joint" type="continuous">
+            <parent link="${parent}"/>
+            <child  link="top_${suffix}_base_link"/>
+            <origin xyz="${x} ${y} ${z+0.1}" rpy="0 0 0"/>
+            <axis xyz="0 0 1"/>
+        </joint>
+
+        <xacro:cylinder_link_macro suffix="bottom_${suffix}_base" mass="0.0001" arg="100000.0" radius="${base_radius}" length="0.001" if_collision="false" if_visual="false"/>
+        <joint name="bottom_${suffix}_base_joint" type="continuous">
+            <parent link="top_${suffix}_base_link"/>
+            <child  link="bottom_${suffix}_base_link"/>
+            <origin xyz="${x} ${y} ${z-0.1}" rpy="0 0 0"/>
+            <axis xyz="0 0 1"/>
+        </joint>
+
+        <xacro:cylinder_link_macro suffix="${suffix}" mass="0.0001" arg="0.0001" radius="${wheel_radius}" length="0.001" if_collision="true" if_visual="false"/>
+        <joint name="${suffix}_joint" type="continuous">
+            <parent link="bottom_${suffix}_base_link"/>
+            <child  link="${suffix}_link"/>
+            <origin xyz="0 0 ${wheel_offset}" rpy="-1.57 0 0"/>
+            <axis xyz="0 0 1"/>
+        </joint>
+    </xacro:macro>
+
+    <xacro:steer_macro suffix="wheel" parent="base_footprint" base_radius="0.3" wheel_radius="0.178" x="0" y="0" z="0" wheel_offset="0.1735"/>
+
+</robot>

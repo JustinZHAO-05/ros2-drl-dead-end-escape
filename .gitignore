@@ -1,0 +1,30 @@
+# ROS2 build artifacts
+build/
+install/
+log/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Models (if you want only trained final models tracked)
+models/checkpoints/
+
+# VS Code
+.vscode/
+
+
+# 忽略 devcontainer 下的所有文件
+.devcontainer/*
+
+# 但保留核心配置文件
+!.devcontainer/devcontainer.json
+!.devcontainer/Dockerfile
+
+# 如果有 README 或文档也保留
+!.devcontainer/README.md
+
+# 忽略可能含有敏感信息的文件
+.devcontainer/*.env
+.devcontainer/*.secret
+
