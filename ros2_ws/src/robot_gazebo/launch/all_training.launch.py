@@ -21,7 +21,7 @@ def launch_setup(context):
 
 
     # get the package directory
-    pkg_share_dir = get_package_share_directory('holonomic_sim')
+    # pkg_share_dir = get_package_share_directory('holonomic_sim')
     robot_gazebo_path = get_package_share_directory('robot_gazebo')
 
 
