@@ -1,0 +1,46 @@
+# ROS2 build artifacts
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Models (if you want only trained final models tracked)
+models/checkpoints/
+
+# Training artifacts & checkpoints
+ros2_ws/src/robot_gazebo/train/sac_runs/
+**/sac_runs/
+**/tb/
+*.pkl
+*.zip
+*.pt
+*.pth
+*.onnx
+*.log
+
+ros2_ws/src/robot_gazebo/train/.venv/
+
+
+# Optional: whole sim folder（如果要完全忽略这个目录，用 / 结尾）
+ros2_ws/src/holonomic_sim/
+# VS Code
+.vscode/
+
+
+# 忽略 devcontainer 下的所有文件
+.devcontainer/*
+
+# 但保留核心配置文件
+!.devcontainer/devcontainer.json
+!.devcontainer/Dockerfile
+
+# 如果有 README 或文档也保留
+!.devcontainer/README.md
+
+# 忽略可能含有敏感信息的文件
+.devcontainer/*.env
+.devcontainer/*.secret
+

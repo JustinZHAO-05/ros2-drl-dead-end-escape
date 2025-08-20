@@ -1,0 +1,121 @@
+docker run -it \
+  --name ros2_drl_dev \
+  --privileged \
+  -v ~/ros2-drl:/workspace \
+  -w /workspace \
+  -v /dev:/dev \
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  -e DISPLAY=unix$DISPLAY \
+  -v ~/.ssh:/root/.ssh:ro \
+  --net=host \
+  --gpus all \
+  ros:humble-ros-base \
+  bash
+
+
+apt-get update && apt-get install -y --no-install-recommends git curl wget ca-certificates
+
+apt-get update && apt-get install -y python3-pip
+pip install torch==2.3.0 stable-baselines3 gymnasium
+
+apt-get update && apt-get install -y git
+
+apt-get update && apt-get install -y git-lfs
+git lfs install
+
+
+sudo apt-get update
+sudo apt-get install lsb-release gnupg
+
+sudo curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
+sudo apt-get update
+sudo apt-get install ignition-fortress
+
+apt install ros-humble-ros-ign-interfaces
+
+sudo apt update
+sudo apt install '~nros-humble-rqt*'
+
+apt install -y libogre-1.12-dev
+
+apt install -y ros-humble-desktop
+
+sudo apt install ros-humble-ros-ign-gazebo
+
+sudo apt install ros-humble-ros-ign
+
+apt install ros-humble-ros-ign-bridge
+
+apt install  ros-humble-ros-ign-image
+
+apt install ros-humble-ign-ros2-control
+
+sudo apt update
+sudo apt install -y ros-humble-ros2controlcli
+
+sudo apt update
+sudo apt install -y \
+  ros-humble-joint-state-broadcaster \
+  ros-humble-joint-trajectory-controller \
+  ros-humble-ros2-controllers
+
+pip install transforms3d
+
+pip install shapely
+
+sudo apt update
+sudo apt install -y python3-ignition-transport
+
+
+apt update && apt install -y mesa-utils x11-apps
+glxinfo | grep -E 'OpenGL vendor|renderer|version'
+# 应显示 NVIDIA 渲染管线信息
+xeyes  # 小眼睛弹出窗口则 X11/GUI OK
+
+# apt-get：Debian/Ubuntu 包管理器
+# update：刷新索引；install -y jq：静默安装 jq（JSON 解析器）
+apt-get update && apt-get install -y jq
+
+pip install tensorboard
+
+apt install python3.10-venv
+
+# 新建并激活虚拟环境（只影响当前 Shell）
+python3 -m venv .venv
+source .venv/bin/activate
+
+# 先卸载可能冲突的老包
+pip uninstall -y numpy opencv-python opencv-contrib-python matplotlib
+
+# 安装与 NumPy 1.x 兼容的版本（常用稳妥组合）
+pip install --no-cache-dir "numpy==1.26.4"
+pip install --no-cache-dir "opencv-python==4.8.1.78"
+pip install --no-cache-dir "matplotlib==3.8.4"
+pip install --no-cache-dir "stable-baselines3==2.3.2"
+# 若需要 PyTorch：
+# CPU：  pip install torch torchvision
+# GPU：  按你容器 CUDA 版本选择对应轮子（可暂用CPU先跑通）
+
+# 快速自检
+pip check
+python - <<'PY'
+import numpy, cv2, matplotlib, stable_baselines3 as sb3
+print("numpy:", numpy.__version__)
+print("opencv:", cv2.__version__)
+print("matplotlib:", matplotlib.__version__)
+print("sb3:", sb3.__version__)
+PY
+
+(.venv) root@docker-desktop:/workspace/ros2_ws/src/robot_gazebo/train# pip install pyyaml
+
+(.venv) root@docker-desktop:/workspace/ros2_ws/src/robot_gazebo/train# pip install typeguard
+
+(.venv) root@docker-desktop:/workspace/ros2_ws/src/robot_gazebo/train# # --index-url 指向官方 CUDA 轮子仓库；默认 PyPI 是 CPU 版
+pip install --no-cache-dir --index-url https://download.pytorch.org/whl/cu121 \
+  torch torchvision torchaudio
+(.venv) root@docker-desktop:/workspace/ros2_ws/src/robot_gazebo/train# pip install transforms3d
+
+(.venv) root@docker-desktop:/workspace/ros2_ws/src/robot_gazebo/train# pip install shapely
+
+(.venv) root@docker-desktop:/workspace/ros2_ws/src/robot_gazebo/train# pip install tensorboard
